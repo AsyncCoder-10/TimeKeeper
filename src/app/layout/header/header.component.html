@@ -1,0 +1,42 @@
+<header class="sticky top-0 z-50 w-full glass-panel border-b border-white/40 bg-white/60 backdrop-blur-md">
+  <div class="max-w-full mx-auto px-10 h-16 flex items-center justify-between">
+    <!-- Brand -->
+    <div class="flex items-center gap-3 group cursor-pointer">
+      <div class="w-10 h-10 bg-tracker-brand rounded-2xl flex items-center justify-center shadow-lg shadow-tracker-brand/20 group-hover:scale-105 transition-transform">
+        <mat-icon class="material-icons text-white !text-[24px]">timer</mat-icon>
+      </div>
+      <div class="flex flex-col">
+        <h1 class="text-xl font-black text-slate-900 leading-none tracking-tighter uppercase">TimeKeeper</h1>
+        <span class="text-[10px] font-bold text-tracker-brand uppercase tracking-widest mt-1 opacity-80">Personal Pro</span>
+      </div>
+    </div>
+
+    <!-- Live Date/Time & User -->
+    <div class="hidden sm:flex items-center gap-6">
+      <div class="flex flex-col items-end border-r border-slate-200 pr-6 h-8 justify-center">
+        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none mb-1">Current Date</span>
+        <span class="text-sm font-bold text-slate-700 tabular-nums leading-none">
+          {{ currentTime | date:'EEEE, MMM d' }}
+        </span>
+      </div>
+      
+      <div class="flex flex-col items-end border-r border-slate-200 pr-6 h-8 justify-center">
+        <span class="text-xl font-black text-slate-900 tabular-nums leading-none tracking-tight">
+          {{ currentTime | date:'shortTime' }}
+        </span>
+      </div>
+
+      <div class="flex items-center gap-4 pl-2">
+        <div class="flex flex-col items-end">
+          <span class="text-[10px] font-bold text-tracker-brand uppercase tracking-widest leading-none mb-1">Active User</span>
+          <span class="text-sm font-black text-slate-900 leading-none truncate max-w-[100px]">
+            {{ auth.currentUserName }}
+          </span>
+        </div>
+        <button mat-icon-button class="!w-10 !h-10 text-slate-400 hover:text-red-500 hover:bg-red-50 transition-colors rounded-xl" (click)="onLogout()" title="Logout">
+          <mat-icon>logout</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>

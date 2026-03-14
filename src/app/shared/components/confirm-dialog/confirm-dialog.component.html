@@ -1,0 +1,15 @@
+<div class="p-6 max-w-sm">
+  <h2 class="text-xl font-bold text-slate-900 mb-2">{{ data.title }}</h2>
+  <div class="text-slate-500 mb-6">
+    {{ data.message }}
+  </div>
+
+  <div class="flex justify-end gap-3">
+    <button mat-button class="!rounded-xl !text-slate-500" [mat-dialog-close]="false">
+      {{ data.cancelText || 'Cancel' }}
+    </button>
+    <button mat-raised-button color="warn" class="!rounded-xl shadow-lg shadow-red-500/20" [mat-dialog-close]="true">
+      {{ data.confirmText || 'Confirm' }}
+    </button>
+  </div>
+</div>

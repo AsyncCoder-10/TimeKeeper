@@ -1,0 +1,175 @@
+<div
+  class="glass-panel p-6 rounded-3xl bg-white/70 shadow-xl border-white/50 h-full flex flex-col md:flex-row gap-8"
+>
+  <!-- Calendar Grid -->
+  <div class="flex-1 flex flex-col">
+    <div class="flex justify-between items-center mb-6 px-1">
+      <div class="flex flex-col">
+        <span
+          class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none mb-1"
+          >Session History</span
+        >
+        <h3 class="text-xl font-black text-slate-900 tracking-tight">
+          {{ viewDate | date: "MMMM yyyy" }}
+        </h3>
+      </div>
+      <div class="flex items-center gap-1 bg-slate-100 p-1 rounded-xl">
+        <button
+          mat-icon-button
+          class="!w-8 !h-8 !flex !items-center !justify-center !text-slate-600 hover:!bg-white hover:!shadow-sm transition-all"
+          (click)="prevMonth()"
+        >
+          <mat-icon
+            class="!text-[20px] !w-5 !h-5 !flex !items-center !justify-center"
+            >chevron_left</mat-icon
+          >
+        </button>
+        <button
+          mat-button
+          class="!px-3 !h-8 !min-w-0 !text-[10px] !font-bold !bg-white !shadow-sm !rounded-lg !flex !items-center !justify-center"
+          (click)="today()"
+        >
+          Today
+        </button>
+        <button
+          mat-icon-button
+          class="!w-8 !h-8 !flex !items-center !justify-center !text-slate-600 hover:!bg-white hover:!shadow-sm transition-all"
+          (click)="nextMonth()"
+        >
+          <mat-icon
+            class="!text-[20px] !w-5 !h-5 !flex !items-center !justify-center"
+            >chevron_right</mat-icon
+          >
+        </button>
+      </div>
+    </div>
+
+    <!-- Week Days Header -->
+    <div class="grid grid-cols-7 gap-1 mb-2">
+      <div
+        *ngFor="let dayName of weekDays"
+        class="text-center text-[10px] font-bold text-slate-400 uppercase tracking-widest py-2"
+      >
+        {{ dayName }}
+      </div>
+    </div>
+
+    <!-- Calendar Days Grid -->
+    <div class="grid grid-cols-7 gap-1 flex-1">
+      <div
+        *ngFor="let d of days"
+        (click)="selectDay(d)"
+        class="aspect-square flex flex-col items-center justify-center rounded-xl cursor-pointer transition-all hover:scale-105 active:scale-95 group relative"
+        [ngClass]="{
+          'opacity-30': !d.isCurrentMonth,
+          'bg-white text-slate-900 shadow-sm':
+            d.isCurrentMonth &&
+            selectedDay?.date?.getTime() !== d.date.getTime(),
+          'bg-tracker-brand text-white shadow-lg':
+            selectedDay?.date?.getTime() === d.date.getTime(),
+          'ring-2 ring-tracker-brand/20': d.isToday,
+        }"
+      >
+        <span class="text-sm font-bold tabular-nums">{{
+          d.date | date: "d"
+        }}</span>
+
+        <!-- Status Indicator Dots -->
+        <div
+          *ngIf="d.logs && d.logs.length > 0"
+          class="absolute bottom-2 flex gap-1"
+        >
+          <div
+            *ngIf="d.status === 'success' || d.status === 'mixed'"
+            class="w-1.5 h-1.5 rounded-full"
+            [ngClass]="
+              selectedDay?.date?.getTime() === d.date.getTime()
+                ? 'bg-white'
+                : 'bg-emerald-400'
+            "
+          ></div>
+          <div
+            *ngIf="d.status === 'late' || d.status === 'mixed'"
+            class="w-1.5 h-1.5 rounded-full"
+            [ngClass]="
+              selectedDay?.date?.getTime() === d.date.getTime()
+                ? 'bg-white'
+                : 'bg-red-500'
+            "
+          ></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Selected Day Details Side Panel -->
+  <div
+    class="w-full md:w-80 flex flex-col border-t md:border-t-0 md:border-l border-slate-100 pt-6 md:pt-0 md:pl-8 overflow-hidden"
+  >
+    <div class="flex flex-col mb-6">
+      <span
+        class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none mb-1"
+        >Details for</span
+      >
+      <h4 class="text-lg font-black text-slate-900 tracking-tight">
+        {{ selectedDay?.date | date: "dd/MM/yyyy" }}
+      </h4>
+    </div>
+
+    <div class="flex-1 overflow-y-auto pr-2 custom-scrollbar">
+      <!-- Empty State for Day -->
+      <div
+        *ngIf="!selectedDay?.logs?.length"
+        class="flex flex-col items-center justify-center py-12 text-slate-300"
+      >
+        <mat-icon class="!text-5xl mb-3 opacity-20">history</mat-icon>
+        <p class="text-[10px] font-bold uppercase tracking-widest">
+          No logs recorded
+        </p>
+      </div>
+
+      <!-- Log List -->
+      <div *ngIf="selectedDay?.logs?.length" class="space-y-3">
+        <div
+          *ngFor="let log of selectedDay?.logs"
+          class="p-4 rounded-2xl bg-white border border-slate-100 hover:border-tracker-brand/20 transition-all group shadow-sm hover:shadow-md"
+        >
+          <div class="flex justify-between items-start mb-2">
+            <span
+              class="text-xs font-bold text-slate-400 tracking-wider tabular-nums"
+              >{{ log?.startTime }} - {{ log?.endTime }}</span
+            >
+            <span
+              class="px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-wider border transition-all"
+              [ngClass]="{
+                'bg-emerald-50 text-emerald-600 border-emerald-100':
+                  log?.status === 'Succeeded' || log?.status === 'Completed',
+                'bg-red-50 text-red-600 border-red-100': (log?.status || '')
+                  .toLowerCase()
+                  .includes('late'),
+                'bg-slate-50 text-slate-500 border-slate-100':
+                  !(
+                    log?.status === 'Succeeded' || log?.status === 'Completed'
+                  ) && !(log?.status || '').toLowerCase().includes('late'),
+              }"
+              >{{ log?.status || "Tracked" }}</span
+            >
+          </div>
+          <div class="flex justify-between items-center">
+            <span
+              class="text-xl font-black text-tracker-brand tabular-nums tracking-tighter leading-none"
+              >{{ log?.duration }}</span
+            >
+            <button
+              mat-icon-button
+              class="!w-9 !h-9 !flex items-center justify-center !text-slate-300 hover:!text-red-500 hover:!bg-red-50 transition-all -mr-1"
+              (click)="onDeleteLog($event, log)"
+            >
+              <mat-icon class="!text-[20px]">delete_outline</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+// Global Font & Reset
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  antialiased: true;
+  font-family: 'Inter', Roboto, 'Helvetica Neue', sans-serif !important;
+  background-color: #f8fafc; // bg-slate-50
+}
+
+// Global Material overrides for a modern light theme
+.mat-mdc-button-base {
+  border-radius: 8px !important;
+}
+
+.mat-mdc-raised-button.mat-primary {
+  background-color: #6366f1 !important; // tracker-brand
+  color: white !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.025em !important;
+}
+
+.mat-mdc-raised-button.mat-warn {
+  background-color: #ef4444 !important; // tracker-danger
+  color: white !important;
+  font-weight: 500 !important;
+}
+
+.glass-panel {
+  background-color: rgba(255, 255, 255, 0.8) !important;
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+// Material Icons Ligature Support
+.material-icons, .mat-icon {
+  font-family: 'Material Icons' !important;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+}
+
+.material-icons-outlined {
+  font-family: 'Material Icons Outlined' !important;
+}
+
+// Notification Panel Styling
+.notification-panel {
+  padding: 0 !important;
+  margin: 16px !important;
+  border-radius: 20px !important;
+  background: white !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  backdrop-filter: blur(20px) !important;
+  overflow: hidden !important;
+}
+
+.mdc-snackbar__surface {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+

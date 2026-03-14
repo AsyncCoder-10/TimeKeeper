@@ -1,0 +1,49 @@
+<div class="glass-panel p-6 rounded-3xl bg-white/70 shadow-xl border-white/50 h-full flex flex-col">
+  <div class="flex flex-col mb-8">
+    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none mb-1">Session Insights</span>
+    <h3 class="text-xl font-black text-slate-900 tracking-tight">Outcome Spread</h3>
+  </div>
+
+  <div class="flex-1 flex flex-col items-center justify-center">
+    <div class="relative w-48 h-48">
+      <svg viewBox="0 0 36 36" class="w-full h-full transform -rotate-90">
+        <!-- Background circle -->
+        <circle cx="18" cy="18" r="16" fill="transparent" stroke="#f1f5f9" stroke-width="3" />
+        
+        <!-- Segments -->
+        <circle 
+          *ngFor="let seg of statusData"
+          cx="18" 
+          cy="18" 
+          r="16" 
+          fill="transparent" 
+          [attr.stroke]="seg.color" 
+          stroke-width="3" 
+          [attr.stroke-dasharray]="seg.percentage + ' ' + (100 - seg.percentage)"
+          [attr.stroke-dashoffset]="-seg.offset"
+          class="transition-all duration-1000 ease-out hover:stroke-width-4 cursor-pointer"
+        />
+      </svg>
+      
+      <!-- Center Text -->
+      <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+        <span class="text-3xl font-black text-slate-900 leading-none">{{ logs.length }}</span>
+        <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1">Total Logs</span>
+      </div>
+    </div>
+
+    <!-- Legend -->
+    <div class="grid grid-cols-1 gap-2 mt-8 w-full">
+      <div *ngFor="let item of statusData" class="flex items-center justify-between p-2 rounded-xl border border-slate-50 bg-white/50">
+        <div class="flex items-center gap-3">
+          <div class="w-2 h-2 rounded-full" [style.background-color]="item.color"></div>
+          <span class="text-xs font-bold text-slate-600">{{ item.name }}</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-black text-slate-900">{{ item.count }}</span>
+          <span class="text-[9px] font-bold text-slate-300">{{ item.percentage | number:'1.0-0' }}%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

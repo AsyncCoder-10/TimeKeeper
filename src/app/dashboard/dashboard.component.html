@@ -1,0 +1,77 @@
+<div class="flex flex-col min-h-screen p-6 px-10 w-full">
+  <!-- Header -->
+  <header class="flex justify-between items-center w-full mb-10">
+    <div class="flex flex-col">
+      <h1 class="text-3xl font-bold text-slate-900 tracking-tight">
+        Time Tracker
+      </h1>
+      <p class="text-slate-500">Track your productivity and session history</p>
+    </div>
+  </header>
+
+  <!-- Tracker Integration -->
+  <div class="max-w-4xl mx-auto w-full mb-12">
+    <app-time-tracker></app-time-tracker>
+  </div>
+
+  <!-- Stats Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full mb-10">
+    <mat-card
+      class="glass-panel !border-none !shadow-xl !shadow-slate-200/50 !rounded-3xl p-8 bg-white/80"
+    >
+      <div class="flex items-center gap-4">
+        <div class="p-3 bg-tracker-brand/10 rounded-2xl text-tracker-brand">
+          <mat-icon class="!w-8 !h-8 !text-[32px]">schedule</mat-icon>
+        </div>
+        <div>
+          <p
+            class="text-sm font-semibold text-slate-500 uppercase tracking-widest"
+          >
+            Total Time Today
+          </p>
+          <h2 class="text-3xl font-extrabold text-slate-900 tabular-nums">
+            {{ todayStats.totalDuration }}
+          </h2>
+        </div>
+      </div>
+    </mat-card>
+
+    <mat-card
+      class="glass-panel !border-none !shadow-xl !shadow-slate-200/50 !rounded-3xl p-8 bg-white/80"
+    >
+      <div class="flex items-center gap-4">
+        <div class="p-3 bg-tracker-accent/10 rounded-2xl text-tracker-accent">
+          <mat-icon class="!w-8 !h-8 !text-[32px]">history</mat-icon>
+        </div>
+        <div>
+          <p
+            class="text-sm font-semibold text-slate-500 uppercase tracking-widest"
+          >
+            Sessions Today
+          </p>
+          <h2 class="text-3xl font-extrabold text-slate-900 tabular-nums">
+            {{ todayStats.totalSessions }}
+          </h2>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+
+  <!-- Trends Section -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 w-full mb-8">
+    <!-- Progress Graph (2/3 width) -->
+    <div class="lg:col-span-2 h-full">
+      <app-progress-graph [logs]="logs"></app-progress-graph>
+    </div>
+
+    <!-- Status Distribution (1/3 width) -->
+    <div class="lg:col-span-1 h-full">
+      <app-status-chart [logs]="logs"></app-status-chart>
+    </div>
+  </div>
+
+  <!-- History Section (Calendar View) -->
+  <div class="w-full mb-12">
+    <app-calendar-view [logs]="logs" (delete)="onDeleteLog($event)"></app-calendar-view>
+  </div>
+</div>

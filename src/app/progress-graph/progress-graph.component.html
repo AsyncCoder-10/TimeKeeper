@@ -1,0 +1,108 @@
+<div class="glass-panel p-6 rounded-3xl bg-white/70 shadow-xl border-white/50 h-full flex flex-col">
+  <div class="flex items-center justify-between mb-8">
+    <div class="flex flex-col">
+      <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none mb-1">Productivity</span>
+      <h3 class="text-xl font-black text-slate-900 tracking-tight">Activity Trend</h3>
+    </div>
+    
+    <!-- Chart Toggle -->
+    <div class="flex bg-slate-100 p-1 rounded-xl">
+      <button 
+        (click)="setChartType('bar')"
+        [class.bg-white]="chartType === 'bar'"
+        [class.shadow-sm]="chartType === 'bar'"
+        [class.text-slate-900]="chartType === 'bar'"
+        [class.text-slate-500]="chartType !== 'bar'"
+        class="px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-lg transition-all"
+      >Bar</button>
+      <button 
+        (click)="setChartType('line')"
+        [class.bg-white]="chartType === 'line'"
+        [class.shadow-sm]="chartType === 'line'"
+        [class.text-slate-900]="chartType === 'line'"
+        [class.text-slate-500]="chartType !== 'line'"
+        class="px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-lg transition-all"
+      >Line</button>
+    </div>
+  </div>
+
+  <!-- Graph SVG -->
+  <div class="flex-1 relative min-h-[200px]">
+    <!-- Bar Chart View -->
+    <div *ngIf="chartType === 'bar'" class="absolute inset-0 flex items-end justify-between gap-2 px-2">
+      <div *ngFor="let day of days" class="flex-1 flex flex-col items-center group relative h-full justify-end">
+        <!-- Tooltip -->
+        <div class="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0 z-20">
+          <div class="bg-slate-900 text-white text-[10px] font-bold px-2 py-1 rounded-lg whitespace-nowrap shadow-xl">
+            {{ day.label }}
+          </div>
+          <div class="w-2 h-2 bg-slate-900 rotate-45 mx-auto -mt-1"></div>
+        </div>
+
+        <!-- Bar -->
+        <div 
+          class="w-full max-w-[40px] rounded-xl bg-gradient-to-t from-tracker-brand to-indigo-400 shadow-lg shadow-tracker-brand/10 transition-all duration-700 ease-out hover:scale-x-110 active:scale-95 cursor-pointer relative overflow-hidden"
+          [style.height.%]="day.height || 5"
+        >
+          <div class="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        </div>
+
+        <!-- Label -->
+        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter mt-4">{{ day.day }}</span>
+      </div>
+    </div>
+
+    <!-- Line Chart View -->
+    <div *ngIf="chartType === 'line'" class="absolute inset-0 flex flex-col">
+      <div class="flex-1 relative">
+        <svg class="w-full h-full overflow-visible" preserveAspectRatio="none" viewBox="0 0 100 100">
+          <!-- Gradient fill -->
+          <defs>
+            <linearGradient id="lineGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="var(--tracker-brand)" stop-opacity="0.2" />
+              <stop offset="100%" stop-color="var(--tracker-brand)" stop-opacity="0" />
+            </linearGradient>
+          </defs>
+          
+          <path 
+            [attr.d]="linePath" 
+            fill="none" 
+            stroke="url(#lineGrad)" 
+            stroke-width="0" 
+            class="fill-current text-tracker-brand/10"
+          />
+          
+          <path 
+            [attr.d]="linePath" 
+            fill="none" 
+            stroke="currentColor" 
+            stroke-width="2" 
+            class="text-tracker-brand drop-shadow-lg"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+
+          <!-- Data Points -->
+          <circle 
+            *ngFor="let p of linePoints; let i = index" 
+            [attr.cx]="p.x" 
+            [attr.cy]="p.y" 
+            r="1.5" 
+            class="fill-white stroke-tracker-brand stroke-[1px] hover:r-2 hover:stroke-[2px] transition-all cursor-pointer"
+          />
+        </svg>
+      </div>
+      <!-- Labels for Line Chart -->
+      <div class="flex justify-between px-2 mt-4">
+        <span *ngFor="let day of days" class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">{{ day.day }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scale Lines (Subtle) -->
+  <div class="absolute inset-x-0 bottom-14 px-8 pointer-events-none opacity-5">
+    <div class="border-t border-slate-900 w-full mb-12"></div>
+    <div class="border-t border-slate-900 w-full mb-12"></div>
+    <div class="border-t border-slate-900 w-full mb-12"></div>
+  </div>
+</div>

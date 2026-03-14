@@ -1,0 +1,118 @@
+<div class="w-full">
+  <div
+    class="glass-panel p-4 px-8 rounded-3xl w-full flex flex-col md:flex-row items-center justify-between relative overflow-hidden bg-white/70 shadow-xl shadow-slate-200/50 border-white/50"
+  >
+    <!-- Subtle Glow for Active Session -->
+    <div
+      *ngIf="isRunning"
+      class="absolute inset-0 bg-tracker-brand/5 animate-pulse-slow"
+    ></div>
+
+    <!-- Clock & Label Section -->
+    <div class="z-10 flex items-center gap-6 mb-4 md:mb-0">
+      <div class="flex flex-col">
+        <span
+          class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] leading-none mb-2"
+          >Session Time</span
+        >
+        <span
+          class="text-5xl font-black tabular-nums text-slate-900 tracking-tighter transition-colors duration-300"
+          [class.text-tracker-brand]="isRunning"
+        >
+          {{ formattedTime }}
+        </span>
+      </div>
+
+      <!-- Start Time Marker -->
+      <div
+        class="hidden sm:flex flex-col justify-center border-l border-slate-200 pl-6 h-10"
+      >
+        <span
+          class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1"
+          >Started At</span
+        >
+        <span class="text-sm font-bold text-slate-600 tabular-nums">
+          {{ startTime ? (startTime | date: "shortTime") : "--:--" }}
+        </span>
+      </div>
+
+      <!-- Target Input -->
+      <div
+        class="hidden md:flex flex-col justify-center border-l border-slate-200 pl-6 h-10 min-w-[150px]"
+      >
+        <label
+          class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1"
+          >Target</label
+        >
+        <div class="flex items-center gap-1">
+          <input
+            type="text"
+            inputmode="numeric"
+            [(ngModel)]="targetHours"
+            placeholder="HH"
+            maxlength="2"
+            class="bg-transparent border-none text-sm font-bold text-tracker-brand outline-none focus:ring-0 w-9 text-center placeholder:text-slate-300"
+            [disabled]="isRunning"
+          />
+          <span class="text-xs font-black text-slate-300">:</span>
+          <input
+            type="text"
+            inputmode="numeric"
+            [(ngModel)]="targetMinutes"
+            placeholder="MM"
+            maxlength="2"
+            class="bg-transparent border-none text-sm font-bold text-tracker-brand outline-none focus:ring-0 w-9 text-center placeholder:text-slate-300"
+            [disabled]="isRunning"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Controls Row -->
+    <div class="z-10 flex items-center gap-3">
+      <!-- Start/Pause Toggle -->
+      <button
+        *ngIf="!isRunning"
+        mat-raised-button
+        color="primary"
+        class="!rounded-2xl !px-6 !py-6 !text-base font-bold shadow-lg shadow-tracker-brand/20 transition-transform hover:scale-105 active:scale-95 flex items-center"
+        (click)="start()"
+      >
+        <mat-icon class="mr-2">play_arrow</mat-icon>
+        Start
+      </button>
+
+      <button
+        *ngIf="isRunning"
+        mat-raised-button
+        class="!bg-tracker-warning !text-white !rounded-2xl !px-6 !py-6 !text-base font-bold shadow-lg shadow-amber-500/20 transition-transform hover:scale-105 active:scale-95 flex items-center"
+        (click)="pause()"
+      >
+        <mat-icon class="mr-2">pause</mat-icon>
+        Pause
+      </button>
+
+      <!-- Stop & Save -->
+      <button
+        mat-raised-button
+        color="warn"
+        class="!rounded-2xl !px-6 !py-6 !text-base font-bold shadow-lg shadow-red-500/20 transition-transform hover:scale-105 active:scale-95 flex items-center"
+        (click)="stop()"
+        [disabled]="time === 0"
+      >
+        <mat-icon class="mr-2">save</mat-icon>
+        Save
+      </button>
+
+      <!-- Reset Icon Button (More compact) -->
+      <button
+        mat-icon-button
+        class="!text-slate-400 hover:!text-tracker-brand !bg-slate-100/50 hover:!bg-slate-50 !w-12 !h-12 transition-colors flex items-center justify-center"
+        (click)="reset()"
+        [disabled]="time === 0 && !startTime"
+      >
+        <mat-icon>refresh</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>
