@@ -2,7 +2,7 @@
 
 **TimeKeeper** is a premium, high-performance time tracking application designed for individuals and teams who value precision. Built with a modern Angular stack and a "Serverless" Google Sheets backend, it combines professional-grade analytics with an elegant, glassmorphic interface.
 
-![Project Preview](https://via.placeholder.com/800x400?text=TimeKeeper+Dashboard+Preview)
+![Project Preview](https://log-your-time.netlify.app/)
 
 ## ✨ Features
 
@@ -59,7 +59,4 @@ To use **Continue with Google**:
 ---
 
 ## 👨‍💻 Author
-**Anshuman** - [GitHub Profile](https://github.com/your-profile)
-
-## 📄 License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+**Anshuman** - [GitHub Profile](https://github.com/AsyncCoder-10)
